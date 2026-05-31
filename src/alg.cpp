@@ -35,7 +35,6 @@ void makeTree(BST<std::string>& tree, const char* filename) {
 }
 
 void printFreq(BST<std::string>& tree) {
-    system("mkdir result");
 
     std::ofstream outFile("result/freq.txt");
 
