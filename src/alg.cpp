@@ -3,6 +3,9 @@
 #include  <fstream>
 #include <cctype>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <random>
 #include  "bst.h"
 
 void makeTree(BST<std::string>& tree, const char* filename) {
@@ -13,6 +16,7 @@ void makeTree(BST<std::string>& tree, const char* filename) {
         return;
     }
 
+    std::vector<std::string> words;
     std::string word;
     char ch;
 
@@ -21,21 +25,26 @@ void makeTree(BST<std::string>& tree, const char* filename) {
             word.push_back(tolower(ch));
         } else {
             if (!word.empty()) {
-                tree.insert(word);
+                words.push_back(word);
                 word.clear();
             }
         }
     }
 
     if (!word.empty()) {
-        tree.insert(word);
+        words.push_back(word);
     }
 
     file.close();
+
+    std::shuffle(words.begin(), words.end(), std::mt19937(std::random_device()()));
+
+    for (const auto& w : words) {
+        tree.insert(w);
+    }
 }
 
 void printFreq(BST<std::string>& tree) {
-
     std::ofstream outFile("result/freq.txt");
 
     tree.printByFrequency(std::cout);
